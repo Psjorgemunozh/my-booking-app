@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { supabase } from '../../lib/supabase';
 import { useRouter } from 'next/navigation';
 
 export default function LoginPage() {
@@ -20,7 +20,6 @@ export default function LoginPage() {
 
     try {
       if (isRegistering) {
-        // Registrar nuevo usuario
         const { data, error: signUpError } = await supabase.auth.signUp({
           email,
           password,
@@ -28,7 +27,6 @@ export default function LoginPage() {
 
         if (signUpError) throw signUpError;
 
-        // Guardar nombre en tabla de usuarios
         const { error: insertError } = await supabase
           .from('usuarios')
           .insert([{ id: data.user.id, email, nombre }]);
@@ -41,7 +39,6 @@ export default function LoginPage() {
         setPassword('');
         setNombre('');
       } else {
-        // Iniciar sesión
         const { error: signInError } = await supabase.auth.signInWithPassword({
           email,
           password,
